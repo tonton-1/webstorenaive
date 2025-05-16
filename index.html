@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>naive2handstore</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    @font-face {
+      font-family: "MyFont";
+      src: url("designateddriverDEMO.otf") format("truetype");
+    }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans Thai", sans-serif;
+      background-color: #f9f8f6;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+      font-weight: 600;
+      color: #3b3b3b;
+      margin: 0;
+    }
+
+    header .logo {
+      max-width: 120px;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem 0;
+      background-color: #f5f4f1;
+      border-bottom: 1px solid #ddd;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #444;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      display: block;
+      width: 0%;
+      height: 2px;
+      background: #444;
+      transition: width 0.3s;
+      margin-top: 5px;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+
+
+    }
+
+    .item {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+
+    .item:hover {
+      transform: translateY(-5px);
+    }
+
+    .item img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .info {
+      padding: 1rem;
+      flex-grow: 1;
+    }
+
+    .info h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.05rem;
+      color: #2b2b2b;
+      font-weight: 500;
+    }
+
+    .info p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    .buttons {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    .buy-btn,
+    .detail-btn {
+      flex: 1;
+      text-align: center;
+      padding: 0.75rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .buy-btn {
+      background: #000000;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .buy-btn:hover {
+      background: #7a7a7a;
+    }
+
+    .detail-btn {
+      background: #f9f8f6;
+      color: #666262;
+      border-right: 1px solid #ddd;
+    }
+
+    .detail-btn:hover {
+      background: #eceae5;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.65);
+    }
+
+    .modal-content {
+      background-color: #ffffff;
+      margin: 8% auto;
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 600px;
+      position: relative;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+    }
+
+    .modal-content h3 {
+      font-size: 1.4rem;
+      margin-top: 0.5rem;
+      color: #333;
+    }
+
+    .modal-content p {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .modal a.buy-btn {
+      margin-top: 1rem;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      background: #181818;
+      color: #fff;
+      padding: 0.75rem;
+      border-radius: 5px;
+      font-weight: 500;
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+
+    .modal a.buy-btn:hover {
+      background: #1d1d1d;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.85rem;
+      color: #999;
+      background-color: #f5f4f1;
+      border-top: 1px solid #ddd;
+    }
+
+    @media (max-width: 768px) {
+      .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        padding: 2rem 1rem;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .modal-content {
+        margin: 10% 5%;
+        padding: 1.5rem;
+      }
+    }
+
+    .logoHeader {
+      font-size: 55px;
+      text-align: center;
+      background-color: rgb(152, 180, 100);
+      font-family: "MyFont";
+      height: 50%;
+      padding: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logoHeader">
+      <span
+        style="color: rgb(0, 74, 173); text-shadow: 3px -1px 0 black, 2.5px -1px 0 black, 3px 1px 0 black, 3px 1px 0 black">NAiVE</span>
+      <span
+        style="color: rgb(255, 255, 255); text-shadow: 3px -1px 0 black, 2.5px -1px 0 black, 3px 1px 0 black, 3px 1px 0 black">2HAND</span>
+      <br />
+      <span
+        style="color: rgb(0, 74, 173); text-shadow: 3px 2px 0 black, 2.5px -1px 0 black, 3px 1px 0 black, 3px 1px 0 black">STORE</span>
+    </div>
+  </header>
+
+  <nav>
+    <a onclick="location.reload()">ทั้งหมด</a>
+    <a onclick="showShirtHidePants()">เสื้อยืด</a>
+    <a onclick="showPantsHideShirt()">กางเกง</a>
+  </nav>
+
+  <section id="shirt" class="gallery">
+    <!-- สินค้าที่ 1 -->
+
+
+
+
+
+  </section>
+  <!-- สินค้าที่ 5 -->
+  <section id="pants" class="gallery">
+
+  </section>
+
+
+
+  <footer>© 2025 naive2handstore | Instagram: @naive2handstore</footer>
+
+  <script>
+    async function loadProducts() {
+      const response = await fetch('products.json');
+      const products = await response.json();
+
+      const shirtContainer = document.getElementById('shirt');
+      const pantsContainer = document.getElementById('pants');
+
+      products.forEach(product => {
+        const itemHTML = `
+        <div class="item">
+          <img src="${product.mainImage}" alt="${product.name}" />
+          <div class="info">
+            <h3>${product.name}</h3>
+            <p>${product.price}</p>
+          </div>
+          <div class="buttons">
+            <button class="detail-btn" onclick="openModal('${product.id}')">ดูรายละเอียด</button>
+            <a class="buy-btn" href="https://www.instagram.com/naive2handstore/" target="_blank">สั่งซื้อ</a>
+          </div>
+        </div>
+      `;
+
+        const modalHTML = `
+        <div id="${product.id}" class="modal">
+          <div class="modal-content">
+            <span class="close" onclick="closeModal('${product.id}')">&times;</span>
+            <img onclick="toggleFullscreen(this)" id="mainImage-${product.id}" src="${product.images[0]}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem" />
+            <div style="display: flex; gap: 10px; margin-bottom: 1rem">
+              ${product.images.map(img => `
+                <img src="${img}" onclick="changeMainImage(this, 'mainImage-${product.id}')" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer; border-radius: 5px" />
+              `).join('')}
+            </div>
+            <h3>${product.name}</h3>
+            <p>รายละเอียด: ${product.description}</p>
+            <p>ราคา: ${product.price}</p>
+            <p>ไซส์: ${product.size}</p>
+            <a class="buy-btn" href="https://www.instagram.com/naive2handstore/" target="_blank">สั่งซื้อทาง IG</a>
+          </div>
+        </div>
+      `;
+
+        if (product.type === 'shirt') {
+          shirtContainer.innerHTML += itemHTML;
+        } else if (product.type === 'pants') {
+          pantsContainer.innerHTML += itemHTML;
+        }
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+      });
+    }
+
+    function changeMainImage(thumbnail, mainId) {
+      document.getElementById(mainId).src = thumbnail.src;
+    }
+
+    function openModal(id) {
+      document.getElementById(id).style.display = 'block';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+    function toggleFullscreen(img) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        img.requestFullscreen();
+      }
+    }
+    function showShirtHidePants() {
+      document.getElementById('shirt').style.display = 'grid';
+      document.getElementById('pants').style.display = 'none';
+    }
+    function showPantsHideShirt() {
+      document.getElementById('shirt').style.display = 'none';
+      document.getElementById('pants').style.display = 'grid';
+    }
+    window.onload = loadProducts;
+  </script>
+
+</body>
+
+</html>

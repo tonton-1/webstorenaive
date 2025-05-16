@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <h1>Login</h1>
+  <div>Email</div>
+  <input id="email" type="text" name="" id="">
+  <div>Password</div>
+  <input id="password" type="password" name="" id="">
+  <div>
+    <button onclick="login()">Login</button>
+    <button>Register</button>
+    <button onclick="getuser()">Get user</button>
+  </div>
+
+  <script>
+    const login = async () => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      console.log(email, password);
+      const response = await axios.post('http://localhost:8000/api/login', {
+        email: email,
+        password: password
+      },
+        {
+          withCredentials: true
+        });
+      console.log(response);
+      localStorage.setItem('token', response.data.token);
+
+    }
+    const getuser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:8000/api/user', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+
+    }
+  </script>
+</body>
+
+</html>

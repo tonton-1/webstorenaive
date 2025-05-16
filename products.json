@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item1",
+    "name": "เสื้อยืดสีเหลือง Oversize",
+    "price": "190 บาท",
+    "type": "shirt",
+    "mainImage": "shirt/VGH_210710_7.jpg",
+    "images": ["shirt/VGH_210710_7.jpg", "shirt/VGH_210710_1.jpg"],
+    "description": "ผ้า Cotton 100%, ทรง Oversize สีเหลืองสว่าง สภาพ 8/10",
+    "size": "Oversize (กว้าง 22\" ยาว 27\")"
+  },
+  {
+    "id": "item2",
+    "name": "เสื้อยืดลายกราฟิก Vintage",
+    "price": "220 บาท",
+    "type": "shirt",
+    "mainImage": "shirt/gg.jpg",
+    "images": ["shirt/gg.jpg", "shirt/sg-11134201-22120-9vtdaisb6pkv00.jpg"],
+    "description": "ผ้า Cotton, ลายกราฟิกวินเทจ สภาพ 9/10",
+    "size": "Free Size"
+  },
+  {
+    "id": "item3",
+    "name": "เสื้อกก Vintage",
+    "price": "220 บาท",
+    "type": "shirt",
+    "mainImage": "shirt/gg.jpg",
+    "images": ["shirt/gg.jpg", "shirt/sg-11134201-22120-9vtdaisb6pkv00.jpg"],
+    "description": "ผ้า Cotton, ลายกราฟิกวินเทจ สภาพ 9/10",
+    "size": "Free Size"
+  },
+  {
+    "id": "item5",
+    "name": "เสื้อเชิ้ตสีพาสเทล Oversize",
+    "price": "270 บาท",
+    "type": "pants",
+    "mainImage": "pants/eb4c75_8272e9a3a0d24c3baf0509eaf96825c9~mv2.avif",
+    "images": ["pants/eb4c75_8272e9a3a0d24c3baf0509eaf96825c9~mv2.avif", "pants/th-11134207-7r98z-ltclfmkomfnhf9.jpg"],
+    "description": "ผ้า Rayon, โทนสีพาสเทล ทรง Oversize สภาพ 9/10",
+    "size": "Oversize (กว้าง 23\" ยาว 30\")"
+  }
+]
