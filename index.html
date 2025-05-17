@@ -77,8 +77,6 @@
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 2rem;
       padding: 3rem 2rem;
-
-
     }
 
     .item {
@@ -235,7 +233,14 @@
       border-top: 1px solid #ddd;
     }
 
+
+
+
+
     @media (max-width: 768px) {
+
+
+
       .gallery {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         padding: 2rem 1rem;
@@ -249,6 +254,15 @@
         margin: 10% 5%;
         padding: 1.5rem;
       }
+
+      .modal-contentImage {
+
+        max-width: 95%;
+        max-height: 95%;
+        border-radius: 8px;
+        margin-top: 40%;
+
+      }
     }
 
     .logoHeader {
@@ -259,10 +273,48 @@
       height: 50%;
       padding: 30px;
     }
+
+    .modalFullScreen {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.95);
+      text-align: center;
+
+    }
+
+
+    .modalFullScreen .modal-contentImage {
+      max-width: 95%;
+      max-height: 95%;
+
+      padding-top: 5%;
+
+
+    }
+
+    .modalFullScreen .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #fff;
+      font-size: 32px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
+  <div id="fullscreenModal" class="modalFullScreen" onclick="hideFullscreenImage()">
+    <span class="close">&times;</span>
+    <img id="fullscreenImg" class="modal-contentImage" />
+  </div>
   <header>
     <div class="logoHeader">
       <span
@@ -283,30 +335,21 @@
 
   <section id="shirt" class="gallery">
     <!-- สินค้าที่ 1 -->
-
-
-
-
-
   </section>
   <!-- สินค้าที่ 5 -->
-  <section id="pants" class="gallery">
-
-  </section>
-
-
+  <section id="pants" class="gallery"></section>
 
   <footer>© 2025 naive2handstore | Instagram: @naive2handstore</footer>
 
   <script>
     async function loadProducts() {
-      const response = await fetch('products.json');
+      const response = await fetch("products.json");
       const products = await response.json();
 
-      const shirtContainer = document.getElementById('shirt');
-      const pantsContainer = document.getElementById('pants');
+      const shirtContainer = document.getElementById("shirt");
+      const pantsContainer = document.getElementById("pants");
 
-      products.forEach(product => {
+      products.forEach((product) => {
         const itemHTML = `
         <div class="item">
           <img src="${product.mainImage}" alt="${product.name}" />
@@ -325,12 +368,19 @@
         <div id="${product.id}" class="modal">
           <div class="modal-content">
             <span class="close" onclick="closeModal('${product.id}')">&times;</span>
-            <img onclick="toggleFullscreen(this)" id="mainImage-${product.id}" src="${product.images[0]}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem" />
+            
+              <img onclick="displayFullScreenImage(this)"  id="mainImage-${product.id}" src="${product.images[0]}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem" />
+ 
             <div style="display: flex; gap: 10px; margin-bottom: 1rem">
-              ${product.images.map(img => `
+              ${product.images
+            .map(
+              (img) => `
                 <img src="${img}" onclick="changeMainImage(this, 'mainImage-${product.id}')" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer; border-radius: 5px" />
-              `).join('')}
+              `
+            )
+            .join("")}
             </div>
+             
             <h3>${product.name}</h3>
             <p>รายละเอียด: ${product.description}</p>
             <p>ราคา: ${product.price}</p>
@@ -340,13 +390,13 @@
         </div>
       `;
 
-        if (product.type === 'shirt') {
+        if (product.type === "shirt") {
           shirtContainer.innerHTML += itemHTML;
-        } else if (product.type === 'pants') {
+        } else if (product.type === "pants") {
           pantsContainer.innerHTML += itemHTML;
         }
 
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        document.body.insertAdjacentHTML("beforeend", modalHTML);
       });
     }
 
@@ -355,30 +405,36 @@
     }
 
     function openModal(id) {
-      document.getElementById(id).style.display = 'block';
+      document.getElementById(id).style.display = "block";
     }
 
     function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
+      document.getElementById(id).style.display = "none";
     }
-    function toggleFullscreen(img) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } else {
-        img.requestFullscreen();
-      }
-    }
+
     function showShirtHidePants() {
-      document.getElementById('shirt').style.display = 'grid';
-      document.getElementById('pants').style.display = 'none';
+      document.getElementById("shirt").style.display = "grid";
+      document.getElementById("pants").style.display = "none";
     }
     function showPantsHideShirt() {
-      document.getElementById('shirt').style.display = 'none';
-      document.getElementById('pants').style.display = 'grid';
+      document.getElementById("shirt").style.display = "none";
+      document.getElementById("pants").style.display = "grid";
     }
     window.onload = loadProducts;
-  </script>
 
+    function displayFullScreenImage(imgElement) {
+      const modal = document.getElementById('fullscreenModal');
+      const fullImg = document.getElementById('fullscreenImg');
+      fullImg.src = imgElement.src;
+      modal.style.display = 'block';
+    }
+
+    function hideFullscreenImage() {
+      const modal = document.getElementById('fullscreenModal');
+      modal.style.display = 'none';
+    }
+
+  </script>
 </body>
 
 </html>
